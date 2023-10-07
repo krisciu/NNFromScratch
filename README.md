@@ -1,3 +1,3 @@
-# RNN From Scratch
+# NN From Scratch
 
-This project aims to build a Recurrent Neural Network (RNN) from scratch 
+This project aims to build a Neural Network from scratch
