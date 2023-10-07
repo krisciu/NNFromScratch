@@ -3,7 +3,7 @@ import math
 from src.functions import sigmoid
 
 
-
+# test Sigmoid
 def test_sigmoid_zero():
     assert sigmoid(0) == pytest.approx(0.5, abs=1e-9)
 
