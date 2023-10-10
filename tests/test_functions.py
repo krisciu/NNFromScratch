@@ -1,5 +1,10 @@
 import pytest
-from src.functions import relu, sigmoid
+from src.functions import binary_cross_entropy_loss, relu, sigmoid
+import numpy as np
+from numpy.testing import assert_almost_equal
+from sklearn.metrics import log_loss
+
+LABELS = [0, 1]
 
 
 # test Sigmoid
@@ -27,3 +32,60 @@ def test_relu_negative():
 def test_relu_positive():
     val = 10000.00234234
     assert relu(val) == val
+
+
+def test_single_value_case_1():
+    y_true = np.array([1])
+    y_pred = np.array([0.9])
+    assert_almost_equal(
+        binary_cross_entropy_loss(y_true, y_pred),
+        log_loss(y_true, y_pred, labels=LABELS),
+    )
+
+
+def test_single_value_case_2():
+    y_true = np.array([0])
+    y_pred = np.array([0.1])
+    assert_almost_equal(
+        binary_cross_entropy_loss(y_true, y_pred),
+        log_loss(y_true, y_pred, labels=LABELS),
+    )
+
+
+def test_multiple_values_case_1():
+    y_true = np.array([1, 0, 1, 0])
+    y_pred = np.array([0.9, 0.1, 0.8, 0.2])
+    assert_almost_equal(
+        binary_cross_entropy_loss(y_true, y_pred),
+        log_loss(y_true, y_pred, labels=LABELS),
+    )
+
+
+def test_all_true_labels_are_1():
+    y_true = np.array([1, 1, 1, 1])
+    y_pred = np.array([0.9, 0.8, 0.95, 0.85])
+    assert_almost_equal(
+        binary_cross_entropy_loss(y_true, y_pred),
+        log_loss(y_true, y_pred, labels=LABELS),
+    )
+
+
+def test_all_true_labels_are_0():
+    y_true = np.array([0, 0, 0, 0])
+    y_pred = np.array([0.1, 0.2, 0.05, 0.15])
+    assert_almost_equal(
+        binary_cross_entropy_loss(y_true, y_pred),
+        log_loss(y_true, y_pred, labels=LABELS),
+    )
+
+
+def test_edge_case_probability_0():
+    y_true = np.array([0])
+    y_pred = np.array([0])
+    assert_almost_equal(binary_cross_entropy_loss(y_true, y_pred), 0)
+
+
+def test_edge_case_probability_1():
+    y_true = np.array([1])
+    y_pred = np.array([1])
+    assert_almost_equal(binary_cross_entropy_loss(y_true, y_pred), 0)
